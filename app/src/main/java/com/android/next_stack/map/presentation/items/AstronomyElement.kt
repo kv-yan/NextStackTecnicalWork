@@ -27,7 +27,7 @@ fun AstronomyElement(modifier: Modifier = Modifier, astronomyItem: AstronomyItem
         AstronomyType.MOONSET -> R.drawable.ic_moonset
     }
     Row(
-        modifier = modifier.padding(horizontal = 4.dp),
+        modifier = modifier.padding(horizontal = 2.dp),
         verticalAlignment = Alignment.Bottom
     ) {
         Image(
@@ -41,14 +41,14 @@ fun AstronomyElement(modifier: Modifier = Modifier, astronomyItem: AstronomyItem
             text = astronomyItem.time,
             color = MainTextColor,
             fontFamily = FontFamily(Font(R.font.roboto_condensed_bold)),
-            fontSize = 15.sp
+            fontSize = 14.sp
         )
         Text(
             modifier = modifier,
             text = astronomyItem.amPm,
             color = MainTextColor,
             fontFamily = FontFamily(Font(R.font.roboto_condensed_bold)),
-            fontSize = 13.sp
+            fontSize = 12.sp
         )
 
     }
