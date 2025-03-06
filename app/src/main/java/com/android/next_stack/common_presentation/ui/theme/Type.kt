@@ -1,4 +1,4 @@
-package com.android.next_stack.ui.theme
+package com.android.next_stack.common_presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
