@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.next_stack.R
@@ -23,13 +24,19 @@ import com.android.next_stack.map.domain.model.tides.Tide
 @Composable
 fun TideItem(modifier: Modifier = Modifier, item: Tide, isShowingDivider: Boolean = true) {
     Column(modifier) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     painter = painterResource(id = item.image),
                     contentDescription = null,
                 )
-                
+
                 Text(
                     text = item.type,
                     color = MainTextColor,
@@ -38,21 +45,34 @@ fun TideItem(modifier: Modifier = Modifier, item: Tide, isShowingDivider: Boolea
                 )
             }
 
-            Text(
-                text = item.time,
-                color = MainTextColor,
-                fontFamily = FontFamily(Font(R.font.roboto_condensed_bold)),
-                fontSize = 16.sp
-            )
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Absolute.Center
+            ) {
+                Text(
+                    text = item.time,
+                    color = MainTextColor,
+                    fontFamily = FontFamily(Font(R.font.roboto_condensed_bold)),
+                    fontSize = 16.sp
+                )
+
+                Text(
+                    text = item.amPm,
+                    color = MainTextColor,
+                    fontFamily = FontFamily(Font(R.font.roboto_serif_thin)),
+                    fontSize = 15.sp
+                )
+            }
 
             Text(
+                modifier = Modifier.weight(1f),
                 text = "${item.height} ft.",
                 color = MainTextColor,
                 fontFamily = FontFamily(Font(R.font.roboto_condensed_bold)),
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                textAlign = TextAlign.End
             )
-
-
         }
         if (isShowingDivider)
             HorizontalDivider(

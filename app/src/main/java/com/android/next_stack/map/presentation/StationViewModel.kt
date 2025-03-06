@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 class StationViewModel(
     private val getTidesExtremesUseCase: GetTidesExtremesUseCase,
     private val getStationUseCase: GetStationUseCase,
@@ -44,12 +47,18 @@ class StationViewModel(
             )
         }
 
+        // Get dynamic dates
+        val tidesStartDate = getCurrentDate("yyyyMMdd") // Format for tides
+        val tidesEndDate = getDateAfterDays(1, "yyyy-MM-dd") // Same day for tides
+        val astronomyStartDate = getCurrentDate("yyyy-MM-dd") // Format for astronomy
+        val astronomyEndDate = getDateAfterDays(7, "yyyy-MM-dd") // 7 days from today
 
+        // Fetch Tides Extremes
         getTidesExtremesUseCase.invoke(
             latitude = latitude,
             longitude = longitude,
-            startDate = "20250219", // Use YYYYMMDD format
-            endDate = "20250219",   // Use YYYYMMDD format
+            startDate = tidesStartDate,
+            endDate = tidesEndDate,
             datum = "msl"
         ).onEach { flow ->
             _screenState.update {
@@ -67,12 +76,13 @@ class StationViewModel(
                 )
             }
         }.launchIn(viewModelScope)
+
         // Fetch Astronomy Data
         getAstronomyDataUseCase.invoke(
             latitude = latitude,
             longitude = longitude,
-            startDate = "2023-10-01", // Replace with dynamic dates if needed
-            endDate = "2023-10-07", // Replace with dynamic dates if needed
+            startDate = astronomyStartDate,
+            endDate = astronomyEndDate,
             datum = "msl"
         ).onEach {
             _screenState.value = _screenState.value.copy(astronomyResponse = it, isLoading = false)
@@ -87,11 +97,24 @@ class StationViewModel(
         }.catch { throwable ->
             _screenState.value = _screenState.value.copy(error = "Error: ${throwable.message}")
         }.launchIn(viewModelScope)
-
     }
 
     // Reset state when dialog is dismissed
     fun resetState() {
         _screenState.update { ScreenState() }
+    }
+
+    // Helper function to get the current date in a specific format
+    private fun getCurrentDate(format: String): String {
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+        return sdf.format(Date())
+    }
+
+    // Helper function to get a date after a certain number of days
+    private fun getDateAfterDays(days: Int, format: String): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, days)
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+        return sdf.format(calendar.time)
     }
 }

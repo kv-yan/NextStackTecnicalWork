@@ -1,16 +1,13 @@
 package com.android.next_stack.map.domain.ext
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.android.next_stack.map.domain.model.astronomy.AstronomyData
-import com.android.next_stack.map.presentation.model.AstronomyItem
-import com.android.next_stack.map.presentation.model.AstronomyType
-
+import com.android.next_stack.map.presentation.model.AstronomyUIType
+import com.android.next_stack.map.presentation.model.AstronomyUiItem
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-fun AstronomyData.getAsList(): List<AstronomyItem> {
-    val astronomyList = mutableListOf<AstronomyItem>()
+fun AstronomyData.getAsList(): List<AstronomyUiItem> {
+    val astronomyList = mutableListOf<AstronomyUiItem>()
 
     fun formatTime(dateTime: String): Pair<String, String> {
         val time = LocalTime.parse(dateTime.substring(11), DateTimeFormatter.ofPattern("HH:mm:ss"))
@@ -19,13 +16,13 @@ fun AstronomyData.getAsList(): List<AstronomyItem> {
     }
 
     listOf(
-        sunrise to AstronomyType.SUNRISE,
-        moonrise to AstronomyType.MOONRISE,
-        sunset to AstronomyType.SUNSET,
-        moonset to AstronomyType.MOONSET
+        sunrise to AstronomyUIType.SUNRISE,
+        moonrise to AstronomyUIType.MOONRISE,
+        sunset to AstronomyUIType.SUNSET,
+        moonset to AstronomyUIType.MOONSET
     ).forEach { (timeString, type) ->
         val (formattedTime, amPm) = formatTime(timeString)
-        astronomyList.add(AstronomyItem(formattedTime, amPm, type))
+        astronomyList.add(AstronomyUiItem(time = formattedTime, amPm = amPm, type = type, high = this.sunset))
     }
 
     return astronomyList

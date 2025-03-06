@@ -18,12 +18,12 @@ fun TideSection(modifier: Modifier = Modifier, screenState: ScreenState) {
     if (screenState.tidesExtremesResponse.isNullOrEmpty()) {
         Text(text = "No tides data available")
     } else {
-        val tides = screenState.tidesExtremesResponse!!
+        val tides = screenState.tidesExtremesResponse
         LazyColumn(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .heightIn(0.dp, 400.dp),
+                .heightIn(0.dp, 250.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             itemsIndexed(tides) { index, item ->

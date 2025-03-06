@@ -15,16 +15,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.next_stack.R
 import com.android.next_stack.common_presentation.ui.theme.MainTextColor
-import com.android.next_stack.map.presentation.model.AstronomyItem
-import com.android.next_stack.map.presentation.model.AstronomyType
+import com.android.next_stack.map.presentation.model.AstronomyUiItem
+import com.android.next_stack.map.presentation.model.AstronomyUIType
 
 @Composable
-fun AstronomyElement(modifier: Modifier = Modifier, astronomyItem: AstronomyItem) {
-    val image = when (astronomyItem.type) {
-        AstronomyType.SUNRISE -> R.drawable.ic_sunrise
-        AstronomyType.SUNSET -> R.drawable.ic_sunset
-        AstronomyType.MOONRISE -> R.drawable.ic_moonrise
-        AstronomyType.MOONSET -> R.drawable.ic_moonset
+fun AstronomyElement(modifier: Modifier = Modifier, astronomyUiItem: AstronomyUiItem) {
+    val image = when (astronomyUiItem.type) {
+        AstronomyUIType.SUNRISE -> R.drawable.ic_sunrise
+        AstronomyUIType.SUNSET -> R.drawable.ic_sunset
+        AstronomyUIType.MOONRISE -> R.drawable.ic_moonrise
+        AstronomyUIType.MOONSET -> R.drawable.ic_moonset
     }
     Row(
         modifier = modifier.padding(horizontal = 2.dp),
@@ -38,14 +38,14 @@ fun AstronomyElement(modifier: Modifier = Modifier, astronomyItem: AstronomyItem
 
         Text(
             modifier = modifier,
-            text = astronomyItem.time,
+            text = astronomyUiItem.time,
             color = MainTextColor,
             fontFamily = FontFamily(Font(R.font.roboto_condensed_bold)),
             fontSize = 14.sp
         )
         Text(
             modifier = modifier,
-            text = astronomyItem.amPm,
+            text = astronomyUiItem.amPm,
             color = MainTextColor,
             fontFamily = FontFamily(Font(R.font.roboto_condensed_bold)),
             fontSize = 12.sp

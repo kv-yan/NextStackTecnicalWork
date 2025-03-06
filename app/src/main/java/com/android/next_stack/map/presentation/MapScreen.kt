@@ -1,5 +1,7 @@
 package com.android.next_stack.map.presentation
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.android.next_stack.map.presentation.component.AstronomySection
 import com.android.next_stack.map.presentation.component.MapHeader
@@ -36,6 +39,18 @@ fun MapScreen(
     val scrollState = rememberScrollState()
     val screenState by viewModel.screenState.collectAsState()
     val stations by viewModel.stations.collectAsState()
+    val context = LocalContext.current
+
+    BackHandler {
+        if (screenState.selectedStationName != null) {
+            viewModel.resetState()
+        } else {
+            // Allow system back press behavior
+            val activity = (context as? Activity)
+            activity?.onBackPressed()
+        }
+    }
+
 
     Box(modifier = modifier.fillMaxSize()) {
         // Display the map
@@ -62,16 +77,18 @@ fun MapScreen(
 
                 MapHeader(screenState = screenState)
                 Spacer(modifier = Modifier.height(8.dp))
-
-                // TODO: Astronomy data displaying
                 if (screenState.isLoading) {
-                    CircularProgressIndicator()
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(140.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 } else {
                     AstronomySection(screenState)
-
                     TideSection(screenState = screenState)
-//                    AstronomySection(screenState = screenState)
-                    println(screenState.astronomyResponse)
                 }
                 if (screenState.error != null) {
                     Text(text = screenState.error ?: "Something went wrong", color = Color.Red)
